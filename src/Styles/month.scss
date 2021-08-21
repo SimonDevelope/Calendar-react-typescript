@@ -1,0 +1,20 @@
+.calendar-date-part{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(1, 50px);
+    margin-top: 50px;
+}
+.calendar-number-part{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repaet(7, 1fr);
+    grid-template-rows: repeat(5, 100px);
+}
+.calendar-inner-attr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

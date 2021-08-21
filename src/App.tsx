@@ -1,10 +1,9 @@
-import React from "react";
-import MyApp from "./Components/Month";
-
-import "./App.css";
+import React from 'react';
+import './Styles/reset.scss';
+import Month from './Components/month';
 
 function App() {
-  return <MyApp />;
+  return <Month />;
 }
 
 export default App;

@@ -1,25 +1,80 @@
+
+.calendar-contents-wrapper {
+    margin: 0px 100px;
+}
+.calendar-header-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px auto;
+}
+.calendar-month-control-wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 10%;
+}
+.calendar-month-control-button-attr {
+    border: none;
+    background: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    
+}
+.calendar-month-control-button-attr:hover {
+    background: #DDDDDD;
+    border-radius: 16px;
+    width: 24px;
+}
+.calender-this-year-time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.calender-this-year-attr {
+    font-size: 24px;
+}
+.calender-this-month-attr {
+    font-size: 24px;
+}
+
+.calender-month-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.partition-with-calender-header {
+    border: 2px solid #DDDDDD;
+}
 .calendar-date-part{
     width: 100%;
     height: auto;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(1, 50px);
-    margin-top: 50px;
+    margin-top: 20px;
+    grid-gap: 15px;
 }
 .calendar-number-part{
+    margin-top: 20px;
     width: 100%;
     height: auto;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(49, 100px);
+    grid-template-rows: repeat(6, 70px);
+    grid-gap: 15px;
 }
 .calendar-inner-attr {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 0.5px solid #000000;
+    border-radius: 8px;
 }
 .calender-number-inner-attr {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 0.5px solid #000000;
+    border-radius: 8px;
 }

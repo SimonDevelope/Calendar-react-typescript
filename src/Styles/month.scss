@@ -19,7 +19,6 @@
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    
 }
 .calendar-month-control-button-attr:hover {
     background: #DDDDDD;
@@ -61,7 +60,7 @@
     height: auto;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 70px);
+    grid-template-rows: repeat(7, 70px);
     grid-gap: 15px;
 }
 .calendar-inner-attr {

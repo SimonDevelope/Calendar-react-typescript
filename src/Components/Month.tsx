@@ -1,78 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Styles/month.scss';
 
 function month() {
   const NAME_OF_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  console.log(NAME_OF_DAYS);
   const day = new Date();
-  // console.log(day);
-  // const year = day.getFullYear();
-  // console.log(year);
-  // const month = day.getMonth(); // 원래 달보다 한 달 뒤로 나온다
-  // console.log(month);
-  // const isDay = day.getDate();
-  // console.log(isDay);
-  // const dayOfWeek = day.getDay(); // 0 ~ 6 (0: 일), (6: 토)
-  // console.log(dayOfWeek);
 
-  const thisMonthFirstDay = new Date(day.getFullYear(), day.getMonth(), 1); // 이번 달의 첫 날
-
-  const thisMonthLastDay = new Date(day.getFullYear(), day.getMonth() + 1, 0); // 이번 달의 마지막 날
-
-  const lastMonthFirstDay = new Date(day.getFullYear(), day.getMonth() - 1, 1); // 지난 달의 첫 날
-
-  const lastMonthLastDay = new Date(day.getFullYear(), day.getMonth(), 0); // 지난 달의 마지막 날
-
-  const nextMonthFirstDay = new Date(day.getFullYear(), day.getMonth(), 1); // 다음 달의 첫 날
-
-  const nextMonthLastDay = new Date(day.getFullYear(), day.getMonth() + 2, 0); // 다음 달의 마지막 날
-
-  console.log(lastMonthFirstDay, nextMonthFirstDay, nextMonthLastDay);
-
-  const thisYear = day.getFullYear();
+  const year = day.getFullYear();
   const thisMonth = day.getMonth() + 1;
-  // 여기까지 전체의 년월일 이 나오고 시간은 00시00분으로 맞춰진 상태가 나온다.
+  const month = day.getMonth() + 1;
 
-  // 이전날짜
-  const prevLastDate = new Date(day.getFullYear(), day.getMonth() - 1, 0).getDate();
-  const prevLastDay = new Date(day.getFullYear(), day.getMonth() - 1, 0).getDay();
+  const [dates, setDates] = useState<number[]>([]);
+  const [months, setMonths] = useState<number>(month);
 
-  const thisLastDate = new Date(day.getFullYear(), day.getMonth(), 0).getDate();
-  const thisLastDay = new Date(day.getFullYear(), day.getMonth(), 0).getDay();
+  const settingMonths = (year: number, months: number) => {
+    const thisMonthFirstDay = new Date(year, months - 1, 1);
 
-  console.log(prevLastDate);
-  console.log(prevLastDay);
-  console.log(thisLastDate);
-  console.log(thisLastDay);
-  console.log(thisMonthLastDay.getDate());
+    const lastMonthLastDay = new Date(year, months, 0);
 
-  const dates = [];
-  if (thisMonthFirstDay.getDay() !== 0) {
-    for (let i = 0; i < thisMonthFirstDay.getDay(); i++) {
-      dates.unshift(lastMonthLastDay.getDate() - i);
+    const thisMonthLastDay = new Date(year, months, 0);
+
+    console.log(thisMonthFirstDay);
+    console.log(lastMonthLastDay);
+    console.log(thisMonthLastDay);
+    const date = [];
+    if (thisMonthFirstDay.getDay() !== 0) {
+      for (let i = 0; i < thisMonthFirstDay.getDay(); i++) {
+        date.unshift(lastMonthLastDay.getDate() - i);
+      }
     }
-  }
 
-  for (let i = 1; i < thisMonthLastDay.getDate(); i++) {
-    dates.push(i);
-  }
+    for (let i = 1; i <= thisMonthLastDay.getDate(); i++) {
+      date.push(i);
+    }
 
-  for (let i = 1; i <= 13 - thisMonthLastDay.getDay(); i++) {
-    dates.push(i);
-  }
+    for (let i = 1; i <= 13 - thisMonthLastDay.getDay(); i++) {
+      date.push(i);
+    }
+    setDates([...date]);
+  };
 
-  console.log(thisMonthFirstDay.setMonth(day.getMonth() - 1));
+  useEffect(() => {
+    settingMonths(year, months);
+    return () => {
+      settingMonths(year, months);
+    };
+  }, [year, month]);
 
-  const prevNumberChecking = day.setMonth(day.getMonth() - 1);
-  console.log(prevNumberChecking);
+  console.log(months);
   const onPrevMonth: React.MouseEventHandler<HTMLButtonElement> = () => {
-    thisMonthLastDay.setMonth(day.getMonth() - 1);
+    setMonths(months - 1);
+    settingMonths(year, months);
   };
   const onNextMonth: React.MouseEventHandler<HTMLButtonElement> = () => {
-    day.setMonth(day.getMonth() + 1);
-    console.log(day.getMonth() + 1);
+    setMonths(months + 1);
+    settingMonths(year, months);
   };
+
   return (
     <>
       <div className="total-view-port">
@@ -80,7 +64,7 @@ function month() {
           <div className="calendar-header-section">
             <div>현재 시간</div>
             <div className="calender-this-year-time">
-              <div className="calender-this-year-attr">{`${thisYear}년`}</div>
+              <div className="calender-this-year-attr">{`${year}년`}</div>
               &nbsp;
               <div className="calender-this-month-attr">{`${thisMonth}월`}</div>
             </div>
@@ -95,7 +79,7 @@ function month() {
           <div className="partition-with-calender-header"></div>
           <div className="calendar-contents-wrapper">
             <div className="calendar-date-part">
-              {NAME_OF_DAYS.map((content: string, index) => {
+              {NAME_OF_DAYS.map((content, index) => {
                 return (
                   <div className="calendar-inner-attr" key={index}>
                     {content}

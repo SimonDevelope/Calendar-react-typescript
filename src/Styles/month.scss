@@ -4,7 +4,7 @@
 }
 .calendar-header-section {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     margin: 20px auto;
 }
@@ -20,6 +20,7 @@
     font-weight: 600;
     cursor: pointer;
 }
+
 .calendar-month-control-button-attr:hover {
     background: #DDDDDD;
     border-radius: 16px;
@@ -29,6 +30,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+
+}
+.calendar-now-time {
+    position: relative;
+    left: 0;
 }
 .calender-this-year-attr {
     font-size: 24px;

@@ -9,15 +9,32 @@ function month() {
   const year = day.getFullYear();
   const month = day.getMonth() + 1;
   const thisDay = day.getDate();
-  const hour = day.getHours();
-  const minute = day.getMinutes();
-  const second = day.getSeconds();
+  // const hour = day.getHours();
+  // const minute = day.getMinutes();
+  // const second = day.getSeconds();
 
   const pointToday: any = useRef();
   const [dates, setDates] = useState<number[]>([]);
   const [years, setYears] = useState<number>(year);
   const [months, setMonths] = useState<number>(month);
   const [today, setToday] = useState<number>(0);
+  const [dateTime, setDateTime] = useState({
+    hours: day.getHours(),
+    minutes: day.getMinutes(),
+    seconds: day.getSeconds(),
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const day = new Date();
+      setDateTime({
+        hours: day.getHours(),
+        minutes: day.getMinutes(),
+        seconds: day.getSeconds(),
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const settingMonths = (years: number, months: number) => {
     const thisMonthFirstDay = new Date(years, months - 1, 1);
@@ -82,11 +99,11 @@ function month() {
       <div className="total-view-port">
         <div className="inner-total-view-port">
           <div className="calendar-header-section">
-            <div>
+            <div className="calendar-now-time">
               {`현재 시간:${years}년 ${months}월 ${thisDay}일 
-              ${hour < 10 ? `0${hour}` : `${hour}`}
-              ${minute < 10 ? `0${minute}` : `${minute}`}
-              ${second < 10 ? `0${second}` : `${second}`}
+              ${dateTime.hours < 10 ? `0${dateTime.hours}` : `${dateTime.hours}`}
+              ${dateTime.minutes < 10 ? `0${dateTime.minutes}` : `${dateTime.minutes}`}
+              ${dateTime.seconds < 10 ? `0${dateTime.seconds}` : `${dateTime.seconds}`}
             `}
             </div>
             <div className="calender-this-year-time">
@@ -124,12 +141,13 @@ function month() {
                       {calenderList}
                     </div>
                   );
+                } else {
+                  return (
+                    <div className="calender-number-inner-attr" key={index} ref={pointToday}>
+                      {calenderList}
+                    </div>
+                  );
                 }
-                return (
-                  <div className="calender-number-inner-attr" key={index} ref={pointToday}>
-                    {calenderList}
-                  </div>
-                );
               })}
             </div>
           </div>

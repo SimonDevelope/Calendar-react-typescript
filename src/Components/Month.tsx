@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import '../Styles/month.scss';
 
 function month() {
@@ -7,22 +7,29 @@ function month() {
   const day = new Date();
 
   const year = day.getFullYear();
-  const thisMonth = day.getMonth() + 1;
   const month = day.getMonth() + 1;
+  const thisDay = day.getDate();
+  const hour = day.getHours();
+  const minute = day.getMinutes();
+  const second = day.getSeconds();
 
+  const pointToday: any = useRef();
   const [dates, setDates] = useState<number[]>([]);
+  const [years, setYears] = useState<number>(year);
   const [months, setMonths] = useState<number>(month);
+  const [today, setToday] = useState<number>(0);
 
-  const settingMonths = (year: number, months: number) => {
-    const thisMonthFirstDay = new Date(year, months - 1, 1);
+  const settingMonths = (years: number, months: number) => {
+    const thisMonthFirstDay = new Date(years, months - 1, 1);
 
-    const lastMonthLastDay = new Date(year, months, 0);
+    const lastMonthLastDay = new Date(years, months - 1, 0);
 
-    const thisMonthLastDay = new Date(year, months, 0);
+    const thisMonthLastDay = new Date(years, months, 0);
 
     console.log(thisMonthFirstDay);
     console.log(lastMonthLastDay);
     console.log(thisMonthLastDay);
+
     const date = [];
     if (thisMonthFirstDay.getDay() !== 0) {
       for (let i = 0; i < thisMonthFirstDay.getDay(); i++) {
@@ -34,46 +41,68 @@ function month() {
       date.push(i);
     }
 
-    for (let i = 1; i <= 13 - thisMonthLastDay.getDay(); i++) {
+    for (let i = 1; i <= 6 - thisMonthLastDay.getDay(); i++) {
       date.push(i);
     }
     setDates([...date]);
   };
 
   useEffect(() => {
-    settingMonths(year, months);
+    settingMonths(years, months);
     return () => {
-      settingMonths(year, months);
+      settingMonths(years, months);
     };
-  }, [year, month]);
+  }, [years, months]);
 
-  console.log(months);
-  const onPrevMonth: React.MouseEventHandler<HTMLButtonElement> = () => {
+  const onPrevMonth: React.MouseEventHandler<HTMLButtonElement> = useCallback(() => {
     setMonths(months - 1);
+    setYears(years);
     settingMonths(year, months);
-  };
-  const onNextMonth: React.MouseEventHandler<HTMLButtonElement> = () => {
+  }, [months, year]);
+
+  const onNextMonth: React.MouseEventHandler<HTMLButtonElement> = useCallback(() => {
     setMonths(months + 1);
+    setYears(years);
     settingMonths(year, months);
-  };
+  }, [months, year]);
+
+  const findToday = dates.indexOf(today);
+  console.log(findToday);
+  console.log(today);
+
+  const checkToday: React.MouseEventHandler<HTMLButtonElement> = useCallback(() => {
+    const Today = new Date().getDate();
+    const checkMonth = new Date().getMonth() + 1;
+    setMonths(checkMonth);
+    setToday(Today);
+  }, []);
 
   return (
     <>
       <div className="total-view-port">
         <div className="inner-total-view-port">
           <div className="calendar-header-section">
-            <div>현재 시간</div>
+            <div>
+              {`현재 시간:${years}년 ${months}월 ${thisDay}일 
+              ${hour < 10 ? `0${hour}` : `${hour}`}
+              ${minute < 10 ? `0${minute}` : `${minute}`}
+              ${second < 10 ? `0${second}` : `${second}`}
+            `}
+            </div>
             <div className="calender-this-year-time">
-              <div className="calender-this-year-attr">{`${year}년`}</div>
+              <div className="calender-this-year-attr">{`${years}년`}</div>
               &nbsp;
-              <div className="calender-this-month-attr">{`${thisMonth}월`}</div>
+              <div className="calender-this-month-attr">{`${months}월`}</div>
             </div>
             <div className="calendar-month-control-wrapper">
               <button className="calendar-month-control-button-attr" onClick={onPrevMonth}>{`<`}</button>
               <div className="calender-month-area">
-                <div className="calendar-month-control-time-attr">8월</div>
+                <div className="calendar-month-control-time-attr">{`${months}월`}</div>
               </div>
               <button className="calendar-month-control-button-attr" onClick={onNextMonth}>{`>`}</button>
+              <button onClick={checkToday} className="calendar-going-today">
+                Today
+              </button>
             </div>
           </div>
           <div className="partition-with-calender-header"></div>
@@ -88,10 +117,17 @@ function month() {
               })}
             </div>
             <div className="calendar-number-part">
-              {dates.map((datesList, index) => {
+              {dates.map((calenderList, index) => {
+                if (findToday === index && month === months && findToday) {
+                  return (
+                    <div className="calender-point-date" key={index}>
+                      {calenderList}
+                    </div>
+                  );
+                }
                 return (
-                  <div key={index} className="calender-number-inner-attr">
-                    {datesList}
+                  <div className="calender-number-inner-attr" key={index} ref={pointToday}>
+                    {calenderList}
                   </div>
                 );
               })}

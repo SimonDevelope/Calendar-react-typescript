@@ -93,13 +93,6 @@
     background: #DDDDDD;
     border-radius: 18px;
 }
-.calender-number-inner-attr {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 0.5px solid #000000;
-    border-radius: 8px;
-}
 .calender-point-date {
     display: flex;
     justify-content: center;
@@ -107,4 +100,19 @@
     border: 0.5px solid #000000;
     border-radius: 8px;
     color:rgb(250, 36, 36);
+}
+.this {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.5px solid #000000;
+    border-radius: 8px; 
+}
+.others {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.5px solid #000000;
+    border-radius: 8px;
+    opacity: 0.5;   
 }

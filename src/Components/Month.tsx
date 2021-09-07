@@ -24,6 +24,9 @@ function month() {
     seconds: day.getSeconds(),
   });
 
+  // 지난 날짜 및 다음 달 날짜 회색으로 표현하기
+  const thisLast = new Date(years, months, 0).getDate();
+
   useEffect(() => {
     const timer = setInterval(() => {
       const day = new Date();
@@ -142,8 +145,11 @@ function month() {
                     </div>
                   );
                 } else {
+                  const firstDateIndex = dates.indexOf(1);
+                  const lastDateIndex = dates.lastIndexOf(thisLast);
+                  const condition = index >= firstDateIndex && index < lastDateIndex + 1 ? 'this' : 'others';
                   return (
-                    <div className="calender-number-inner-attr" key={index} ref={pointToday}>
+                    <div className={condition} key={index} ref={pointToday}>
                       {calenderList}
                     </div>
                   );
